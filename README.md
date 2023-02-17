@@ -1,4 +1,14 @@
-# is <sup>[![Version Badge][npm-version-svg]][npm-url]</sup>
+<!--
+ * @Description:
+ * @Author: wangfuyuan
+ * @Email: wangfuyuan@nnuo.com
+ * @Date: 2023-02-17 15:22:04
+ * @LastEditors: wangfuyuan
+ * @LastEditTime: 2023-02-17 16:03:51
+ * @FilePath: \fy.js\README.md
+-->
+
+# fy <sup>[![Version Badge][npm-version-svg]][npm-url]</sup>
 
 一个自用的 JavaScript 类型测试库
 
@@ -96,3 +106,6 @@ $ yarn add fy.js
 ### 大数字
 
 - `fy.bigint` (value)
+
+[npm-url]: https://npmjs.org/package/fy.js
+[npm-version-svg]: http://versionbadg.es/zoeblow/fy.js.svg
