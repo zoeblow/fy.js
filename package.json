@@ -1,0 +1,49 @@
+{
+  "name": "fy.js",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "prepublishOnly": "safe-publish-latest",
+    "prepublish": "not-in-publish || npm run prepublishOnly",
+    "pretest": "npm run lint",
+    "lint": "eslint ."
+  },
+  "author": {
+    "name": "Fuyuan Wang",
+    "url": "http://onirame.com"
+  },
+  "description": "the definitive JavaScript type testing library",
+  "homepage": "https://github.com/zoeblow/fy.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zoeblow/fy.js.git"
+  },
+  "keywords": [
+    "util",
+    "type",
+    "test"
+  ],
+  "contributors": [],
+  "devDependencies": {},
+  "testling": {
+    "files": "test/index.js",
+    "browsers": [
+      "iexplore/6.0..latest",
+      "firefox/3.0",
+      "firefox/15.0..latest",
+      "firefox/nightly",
+      "chrome/4.0",
+      "chrome/22.0..latest",
+      "chrome/canary",
+      "opera/10.0..latest",
+      "opera/next",
+      "safari/5.0.5..latest",
+      "ipad/6.0..latest",
+      "iphone/6.0..latest"
+    ]
+  },
+  "engines": {
+    "node": "*"
+  }
+}
