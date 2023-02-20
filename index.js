@@ -43,8 +43,8 @@ var fy = {};
  * Test general.
  */
 /**
- * is.type
- * Test if `value` is a type of `type`.
+ * isType
+ * Test if `value` is a type of `typeof`.
  *
  * @param {*} value value to test
  * @param {String} type type
@@ -52,33 +52,35 @@ var fy = {};
  * @api public
  */
 
-is.a = is.type = function (value, type) {
+isA = isTypeof = function (value, type) {
   return typeof value === type;
 };
 
 /**
- * fy.defined
+ * fy.isDefined
  * Test if `value` is defined.
+ * 测试是否定义了`value`。
  *
  * @param {*} value value to test
  * @return {Boolean} true if 'value' is defined, false otherwise
  * @api public
  */
 
-fy.defined = function (value) {
+fy.isDefined = function (value) {
   return typeof value !== "undefined";
 };
 
 /**
- * fy.empty
+ * fy.isEmpty
  * Test if `value` is empty.
+ * 测试`value`是否为空。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is empty, false otherwise
  * @api public
  */
 
-fy.empty = function (value) {
+fy.isEmpty = function (value) {
   var type = toStr.call(value);
   var key;
 
@@ -103,15 +105,16 @@ fy.empty = function (value) {
 };
 
 /**
- * fy.equal
+ * fy.isEqual
  * Test if `value` is equal to `other`.
+ * 测试`value`是否等于`other`。
  *
  * @param {*} value value to test
  * @param {*} other value to compare with
  * @return {Boolean} true if `value` is equal to `other`, false otherwise
  */
 
-fy.equal = function equal(value, other) {
+fy.isEqual = function equal(value, other) {
   if (value === other) {
     return true;
   }
@@ -125,12 +128,12 @@ fy.equal = function equal(value, other) {
 
   if (type === "[object Object]") {
     for (key in value) {
-      if (!fy.equal(value[key], other[key]) || !(key in other)) {
+      if (!fy.isEqual(value[key], other[key]) || !(key in other)) {
         return false;
       }
     }
     for (key in other) {
-      if (!fy.equal(value[key], other[key]) || !(key in value)) {
+      if (!fy.isEqual(value[key], other[key]) || !(key in value)) {
         return false;
       }
     }
@@ -143,7 +146,7 @@ fy.equal = function equal(value, other) {
       return false;
     }
     while (key--) {
-      if (!fy.equal(value[key], other[key])) {
+      if (!fy.isEqual(value[key], other[key])) {
         return false;
       }
     }
@@ -162,8 +165,9 @@ fy.equal = function equal(value, other) {
 };
 
 /**
- * fy.hosted
+ * fy.isHosted
  * Test if `value` is hosted by `host`.
+ * 测试`value`是否由`Host`托管。
  *
  * @param {*} value to test
  * @param {*} host host to test with
@@ -171,47 +175,50 @@ fy.equal = function equal(value, other) {
  * @api public
  */
 
-fy.hosted = function (value, host) {
+fy.isHosted = function (value, host) {
   var type = typeof host[value];
   return type === "object" ? !!host[value] : !NON_HOST_TYPES[type];
 };
 
 /**
- * fy.instance
+ * fy.isInstance
  * Test if `value` is an instance of `constructor`.
+ * 测试`value`是否为`constructor`的实例。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is an instance of `constructor`
  * @api public
  */
 
-fy.instance = is["instanceof"] = function (value, constructor) {
+fy.isInstance = fy["instanceof"] = function (value, constructor) {
   return value instanceof constructor;
 };
 
 /**
- * fy.nil / fy.null
+ * fy.isNull / fy.null
  * Test if `value` is null.
+ * 测试`value`是否 `null`。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is null, false otherwise
  * @api public
  */
 
-fy.nil = is["null"] = function (value) {
+fy.isNull = fy["null"] = function (value) {
   return value === null;
 };
 
 /**
- * fy.undef / fy.undefined
+ * fy.isUndefined / fy.undefined
  * Test if `value` is undefined.
+ * 测试`value`是否 `undefined`。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is undefined, false otherwise
  * @api public
  */
 
-fy.undef = fy.undefined = function (value) {
+fy.isUndefined = fy["undefined"] = function (value) {
   return typeof value === "undefined";
 };
 
@@ -220,21 +227,22 @@ fy.undef = fy.undefined = function (value) {
  */
 
 /**
- * fy.args
+ * fy.isArgs
  * Test if `value` is an arguments object.
+ * 测试`value`是否为参数对象。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is an arguments object, false otherwise
  * @api public
  */
 
-fy.args = fy.arguments = function (value) {
+fy.isArgs = fy.isArguments = function (value) {
   var isStandardArguments = toStr.call(value) === "[object Arguments]";
   var isOldArguments =
-    !fy.array(value) &&
-    fy.arraylike(value) &&
-    fy.object(value) &&
-    fy.fn(value.callee);
+    !fy.isArray(value) &&
+    fy.isArrayLike(value) &&
+    fy.isObject(value) &&
+    fy.isFn(value.callee);
   return isStandardArguments || isOldArguments;
 };
 
@@ -243,60 +251,63 @@ fy.args = fy.arguments = function (value) {
  */
 
 /**
- * fy.array
+ * fy.isArray
  * Test if 'value' is an array.
+ * 测试‘Value’是否为数组。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is an array, false otherwise
  * @api public
  */
 
-fy.array =
+fy.isArray =
   Array.isArray ||
   function (value) {
     return toStr.call(value) === "[object Array]";
   };
 
 /**
- * fy.arguments.empty
+ * fy.isArguments.isEmpty
  * Test if `value` is an empty arguments object.
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is an empty arguments object, false otherwise
  * @api public
  */
-fy.args.empty = function (value) {
-  return fy.args(value) && value.length === 0;
+fy.isArgs.isEmpty = function (value) {
+  return fy.isArgs(value) && value.length === 0;
 };
 
 /**
- * fy.array.empty
+ * fy.isArray.isEmpty
  * Test if `value` is an empty array.
+ * 测试`value`是否为空数组。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is an empty array, false otherwise
  * @api public
  */
-fy.array.empty = function (value) {
-  return fy.array(value) && value.length === 0;
+fy.isArray.isEmpty = function (value) {
+  return fy.isArray(value) && value.length === 0;
 };
 
 /**
- * fy.arraylike
+ * fy.isArrayLike
  * Test if `value` is an arraylike object.
+ * 测试`value`是否是类数组的对象。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is an arguments object, false otherwise
  * @api public
  */
 
-fy.arraylike = function (value) {
+fy.isArrayLike = function (value) {
   return (
     !!value &&
-    !fy.bool(value) &&
+    !fy.isBool(value) &&
     owns.call(value, "length") &&
     isFinite(value.length) &&
-    fy.number(value.length) &&
+    fy.isNumber(value.length) &&
     value.length >= 0
   );
 };
@@ -306,7 +317,7 @@ fy.arraylike = function (value) {
  */
 
 /**
- * fy.bool
+ * fy.isBool
  * Test if `value` is a boolean.
  *
  * @param {*} value value to test
@@ -314,7 +325,7 @@ fy.arraylike = function (value) {
  * @api public
  */
 
-fy.bool = is["boolean"] = function (value) {
+fy.isBool = fy["boolean"] = function (value) {
   return toStr.call(value) === "[object Boolean]";
 };
 
@@ -327,8 +338,8 @@ fy.bool = is["boolean"] = function (value) {
  * @api public
  */
 
-is["false"] = function (value) {
-  return fy.bool(value) && Boolean(Number(value)) === false;
+fy.isFalse = fy["false"] = function (value) {
+  return fy.isBool(value) && Boolean(Number(value)) === false;
 };
 
 /**
@@ -340,8 +351,8 @@ is["false"] = function (value) {
  * @api public
  */
 
-is["true"] = function (value) {
-  return fy.bool(value) && Boolean(Number(value)) === true;
+fy.isTrue = fy["true"] = function (value) {
+  return fy.isBool(value) && Boolean(Number(value)) === true;
 };
 
 /**
@@ -349,27 +360,28 @@ is["true"] = function (value) {
  */
 
 /**
- * fy.date
+ * fy.isDate
  * Test if `value` is a date.
+ * 测试`value`是否为日期。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is a date, false otherwise
  * @api public
  */
 
-fy.date = function (value) {
+fy.isDate = function (value) {
   return toStr.call(value) === "[object Date]";
 };
 
 /**
- * fy.date.valid
+ * fy.isDate.valid
  * Test if `value` is a valid date.
  *
  * @param {*} value value to test
  * @returns {Boolean} true if `value` is a valid date, false otherwise
  */
-fy.date.valid = function (value) {
-  return fy.date(value) && !isNaN(Number(value));
+fy.isDate.valid = function (value) {
+  return fy.isDate(value) && !isNaN(Number(value));
 };
 
 /**
@@ -377,15 +389,16 @@ fy.date.valid = function (value) {
  */
 
 /**
- * fy.element
+ * fy.isElement
  * Test if `value` is an html element.
+ * 测试`value`是否为html元素。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is an HTML Element, false otherwise
  * @api public
  */
 
-fy.element = function (value) {
+fy.isElement = function (value) {
   return (
     value !== undefined &&
     typeof HTMLElement !== "undefined" &&
@@ -399,15 +412,16 @@ fy.element = function (value) {
  */
 
 /**
- * fy.error
+ * fy.isError
  * Test if `value` is an error object.
+ * 测试`value`是否为`error`对象。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is an error object, false otherwise
  * @api public
  */
 
-fy.error = function (value) {
+fy.isError = function (value) {
   return toStr.call(value) === "[object Error]";
 };
 
@@ -416,16 +430,17 @@ fy.error = function (value) {
  */
 
 /**
- * fy.fn / fy.function (deprecated)
+ * fy.isFn / fy.function (deprecated)
  * Test if `value` is a function.
+ * 测试`value`是否为函数。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is a function, false otherwise
  * @api public
  */
 
-fy.fn = is["function"] = function (value) {
-  var isAlert = typeof window !== "undefined" && value === window.alert;
+fy.isFn = fy["function"] = function (value) {
+  var isAlert = typeof window !== "undefined" && value === window.isAlert;
   if (isAlert) {
     return true;
   }
@@ -442,51 +457,55 @@ fy.fn = is["function"] = function (value) {
  */
 
 /**
- * fy.number
+ * fy.isNumber
  * Test if `value` is a number.
+ * 测试`value`是否为数字。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is a number, false otherwise
  * @api public
  */
 
-fy.number = function (value) {
+fy.isNumber = function (value) {
   return toStr.call(value) === "[object Number]";
 };
 
 /**
- * fy.infinite
+ * fy.isInfinite
  * Test if `value` is positive or negative infinity.
+ * 测试`value`是正无穷大还是负无穷大。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is positive or negative Infinity, false otherwise
  * @api public
  */
-fy.infinite = function (value) {
+fy.isInfinite = function (value) {
   return value === Infinity || value === -Infinity;
 };
 
 /**
- * fy.decimal
+ * fy.isDecimal
  * Test if `value` is a decimal number.
+ * 测试`value`是否为十进制数。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is a decimal number, false otherwise
  * @api public
  */
 
-fy.decimal = function (value) {
+fy.isDecimal = function (value) {
   return (
-    fy.number(value) &&
+    fy.isNumber(value) &&
     !isActualNaN(value) &&
-    !fy.infinite(value) &&
+    !fy.isInfinite(value) &&
     value % 1 !== 0
   );
 };
 
 /**
- * fy.divisibleBy
+ * fy.isDivisibleBy
  * Test if `value` is divisible by `n`.
+ * 测试`value`是否可以被`N`整除。
  *
  * @param {Number} value value to test
  * @param {Number} n dividend
@@ -494,13 +513,13 @@ fy.decimal = function (value) {
  * @api public
  */
 
-fy.divisibleBy = function (value, n) {
-  var isDividendInfinite = fy.infinite(value);
-  var isDivisorInfinite = fy.infinite(n);
+fy.isDivisibleBy = function (value, n) {
+  var isDividendInfinite = fy.isInfinite(value);
+  var isDivisorInfinite = fy.isInfinite(n);
   var isNonZeroNumber =
-    fy.number(value) &&
+    fy.isNumber(value) &&
     !isActualNaN(value) &&
-    fy.number(n) &&
+    fy.isNumber(n) &&
     !isActualNaN(n) &&
     n !== 0;
   return (
@@ -511,21 +530,23 @@ fy.divisibleBy = function (value, n) {
 };
 
 /**
- * fy.integer
+ * fy.isInteger
  * Test if `value` is an integer.
+ * 测试`value`是否为整数。
  *
  * @param value to test
  * @return {Boolean} true if `value` is an integer, false otherwise
  * @api public
  */
 
-fy.integer = is["int"] = function (value) {
-  return fy.number(value) && !isActualNaN(value) && value % 1 === 0;
+fy.isInteger = fy["int"] = function (value) {
+  return fy.isNumber(value) && !isActualNaN(value) && value % 1 === 0;
 };
 
 /**
- * fy.maximum
+ * fy.isMaximum
  * Test if `value` is greater than 'others' values.
+ * 测试`value`是否是`others`值中最大的。
  *
  * @param {Number} value value to test
  * @param {Array} others values to compare with
@@ -533,10 +554,10 @@ fy.integer = is["int"] = function (value) {
  * @api public
  */
 
-fy.maximum = function (value, others) {
+fy.isMax = fy.isMaximum = function (value, others) {
   if (isActualNaN(value)) {
     throw new TypeError("NaN is not a valid value");
-  } else if (!fy.arraylike(others)) {
+  } else if (!fy.isArrayLike(others)) {
     throw new TypeError("second argument must be array-like");
   }
   var len = others.length;
@@ -551,8 +572,9 @@ fy.maximum = function (value, others) {
 };
 
 /**
- * fy.minimum
+ * fy.isMinimum
  * Test if `value` is less than `others` values.
+ * 测试`value`是否小于`others`值。
  *
  * @param {Number} value value to test
  * @param {Array} others values to compare with
@@ -560,10 +582,10 @@ fy.maximum = function (value, others) {
  * @api public
  */
 
-fy.minimum = function (value, others) {
+fy.isMin = fy.isMinimum = function (value, others) {
   if (isActualNaN(value)) {
     throw new TypeError("NaN is not a valid value");
-  } else if (!fy.arraylike(others)) {
+  } else if (!fy.isArrayLike(others)) {
     throw new TypeError("second argument must be array-like");
   }
   var len = others.length;
@@ -578,53 +600,57 @@ fy.minimum = function (value, others) {
 };
 
 /**
- * fy.nan
+ * fy.isNaN
  * Test if `value` is not a number.
+ * 测试`value`是否不是NaN。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is not a number, false otherwise
  * @api public
  */
 
-fy.nan = function (value) {
-  return !fy.number(value) || value !== value;
+fy.isNaN = function (value) {
+  return !fy.isNumber(value) || value !== value;
 };
 
 /**
- * fy.even
+ * fy.isEven
  * Test if `value` is an even number.
+ * 测试`value`是否为偶数。
  *
  * @param {Number} value value to test
  * @return {Boolean} true if `value` is an even number, false otherwise
  * @api public
  */
 
-fy.even = function (value) {
+fy.isEven = function (value) {
   return (
-    fy.infinite(value) ||
-    (fy.number(value) && value === value && value % 2 === 0)
+    fy.isInfinite(value) ||
+    (fy.isNumber(value) && value === value && value % 2 === 0)
   );
 };
 
 /**
- * fy.odd
+ * fy.isOdd
  * Test if `value` is an odd number.
+ * 测试`value`是否为奇数。
  *
  * @param {Number} value value to test
  * @return {Boolean} true if `value` is an odd number, false otherwise
  * @api public
  */
 
-fy.odd = function (value) {
+fy.isOdd = function (value) {
   return (
-    fy.infinite(value) ||
-    (fy.number(value) && value === value && value % 2 !== 0)
+    fy.isInfinite(value) ||
+    (fy.isNumber(value) && value === value && value % 2 !== 0)
   );
 };
 
 /**
- * fy.ge
+ * fy.isGe
  * Test if `value` is greater than or equal to `other`.
+ * 测试`value`是否大于或等于`other`。
  *
  * @param {Number} value value to test
  * @param {Number} other value to compare with
@@ -632,16 +658,17 @@ fy.odd = function (value) {
  * @api public
  */
 
-fy.ge = function (value, other) {
+fy.isGe = function (value, other) {
   if (isActualNaN(value) || isActualNaN(other)) {
     throw new TypeError("NaN is not a valid value");
   }
-  return !fy.infinite(value) && !fy.infinite(other) && value >= other;
+  return !fy.isInfinite(value) && !fy.isInfinite(other) && value >= other;
 };
 
 /**
- * fy.gt
+ * fy.isGt
  * Test if `value` is greater than `other`.
+ * 测试`value`是否大于`other`。
  *
  * @param {Number} value value to test
  * @param {Number} other value to compare with
@@ -649,16 +676,17 @@ fy.ge = function (value, other) {
  * @api public
  */
 
-fy.gt = function (value, other) {
+fy.isGt = function (value, other) {
   if (isActualNaN(value) || isActualNaN(other)) {
     throw new TypeError("NaN is not a valid value");
   }
-  return !fy.infinite(value) && !fy.infinite(other) && value > other;
+  return !fy.isInfinite(value) && !fy.isInfinite(other) && value > other;
 };
 
 /**
- * fy.le
+ * fy.isLe
  * Test if `value` is less than or equal to `other`.
+ * 测试`value`是否小于等于`other`。
  *
  * @param {Number} value value to test
  * @param {Number} other value to compare with
@@ -666,33 +694,34 @@ fy.gt = function (value, other) {
  * @api public
  */
 
-fy.le = function (value, other) {
+fy.isLe = function (value, other) {
   if (isActualNaN(value) || isActualNaN(other)) {
     throw new TypeError("NaN is not a valid value");
   }
-  return !fy.infinite(value) && !fy.infinite(other) && value <= other;
+  return !fy.isInfinite(value) && !fy.isInfinite(other) && value <= other;
 };
 
 /**
- * fy.lt
+ * fy.isLt
  * Test if `value` is less than `other`.
- *
+ * 测试`value`是否小于`other`。
  * @param {Number} value value to test
  * @param {Number} other value to compare with
  * @return {Boolean} if `value` is less than `other`
  * @api public
  */
 
-fy.lt = function (value, other) {
+fy.isLt = function (value, other) {
   if (isActualNaN(value) || isActualNaN(other)) {
     throw new TypeError("NaN is not a valid value");
   }
-  return !fy.infinite(value) && !fy.infinite(other) && value < other;
+  return !fy.isInfinite(value) && !fy.isInfinite(other) && value < other;
 };
 
 /**
- * fy.within
+ * fy.isWithin
  * Test if `value` is within `start` and `finish`.
+ * 测试`value`是否在`start`和`finish`之间。
  *
  * @param {Number} value value to test
  * @param {Number} start lower bound
@@ -700,14 +729,18 @@ fy.lt = function (value, other) {
  * @return {Boolean} true if 'value' is is within 'start' and 'finish'
  * @api public
  */
-fy.within = function (value, start, finish) {
+fy.isWithin = function (value, start, finish) {
   if (isActualNaN(value) || isActualNaN(start) || isActualNaN(finish)) {
     throw new TypeError("NaN is not a valid value");
-  } else if (!fy.number(value) || !fy.number(start) || !fy.number(finish)) {
+  } else if (
+    !fy.isNumber(value) ||
+    !fy.isNumber(start) ||
+    !fy.isNumber(finish)
+  ) {
     throw new TypeError("all arguments must be numbers");
   }
   var isAnyInfinite =
-    fy.infinite(value) || fy.infinite(start) || fy.infinite(finish);
+    fy.isInfinite(value) || fy.isInfinite(start) || fy.isInfinite(finish);
   return isAnyInfinite || (value >= start && value <= finish);
 };
 
@@ -716,34 +749,36 @@ fy.within = function (value, start, finish) {
  */
 
 /**
- * fy.object
+ * fy.isObject
  * Test if `value` is an object.
+ * 测试`value`是否为Object。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is an object, false otherwise
  * @api public
  */
-fy.object = function (value) {
+fy.isObject = function (value) {
   return toStr.call(value) === "[object Object]";
 };
 
 /**
  * fy.primitive
  * Test if `value` is a primitive.
+ * 测试`value`是否为原始值。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is a primitive, false otherwise
  * @api public
  */
-fy.primitive = function isPrimitive(value) {
+fy.isPrimitive = function isPrimitive(value) {
   if (!value) {
     return true;
   }
   if (
     typeof value === "object" ||
-    fy.object(value) ||
-    fy.fn(value) ||
-    fy.array(value)
+    fy.isObject(value) ||
+    fy.isFn(value) ||
+    fy.isArray(value)
   ) {
     return false;
   }
@@ -751,17 +786,18 @@ fy.primitive = function isPrimitive(value) {
 };
 
 /**
- * fy.hash
+ * fy.isHash
  * Test if `value` is a hash - a plain object literal.
+ * 测试`value`是否为 Hash --纯对象文字。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is a hash, false otherwise
  * @api public
  */
 
-fy.hash = function (value) {
+fy.isHash = function (value) {
   return (
-    fy.object(value) &&
+    fy.isObject(value) &&
     value.constructor === Object &&
     !value.nodeType &&
     !value.setInterval
@@ -773,15 +809,16 @@ fy.hash = function (value) {
  */
 
 /**
- * fy.regexp
+ * fy.isRegexp
  * Test if `value` is a regular expression.
+ * 测试`value`是否为正则表达式。
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is a regexp, false otherwise
  * @api public
  */
 
-fy.regexp = function (value) {
+fy.isRegexp = function (value) {
   return toStr.call(value) === "[object RegExp]";
 };
 
@@ -790,15 +827,16 @@ fy.regexp = function (value) {
  */
 
 /**
- * fy.string
+ * fy.isString
  * Test if `value` is a string.
+ * 测试`value`是否为字符串。
  *
  * @param {*} value value to test
  * @return {Boolean} true if 'value' is a string, false otherwise
  * @api public
  */
 
-fy.string = function (value) {
+fy.isString = function (value) {
   return toStr.call(value) === "[object String]";
 };
 
@@ -807,16 +845,17 @@ fy.string = function (value) {
  */
 
 /**
- * fy.base64
+ * fy.isBase64
  * Test if `value` is a valid base64 encoded string.
+ * 测试`value`是否为有效的Base64编码字符串。
  *
  * @param {*} value value to test
  * @return {Boolean} true if 'value' is a base64 encoded string, false otherwise
  * @api public
  */
 
-fy.base64 = function (value) {
-  return fy.string(value) && (!value.length || base64Regex.test(value));
+fy.isBase64 = function (value) {
+  return fy.isString(value) && (!value.length || base64Regex.test(value));
 };
 
 /**
@@ -824,28 +863,30 @@ fy.base64 = function (value) {
  */
 
 /**
- * fy.hex
+ * fy.isHex
  * Test if `value` is a valid hex encoded string.
+ * 测试`value`是否为有效的十六进制编码字符串。
  *
  * @param {*} value value to test
  * @return {Boolean} true if 'value' is a hex encoded string, false otherwise
  * @api public
  */
 
-fy.hex = function (value) {
-  return fy.string(value) && (!value.length || hexRegex.test(value));
+fy.isHex = function (value) {
+  return fy.isString(value) && (!value.length || hexRegex.test(value));
 };
 
 /**
- * fy.symbol
+ * fy.isSymbol
  * Test if `value` is an ES6 Symbol
+ * 测试`value`是否为ES6 Symbol
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is a Symbol, false otherise
  * @api public
  */
 
-fy.symbol = function (value) {
+fy.isSymbol = function (value) {
   return (
     typeof Symbol === "function" &&
     toStr.call(value) === "[object Symbol]" &&
@@ -854,15 +895,16 @@ fy.symbol = function (value) {
 };
 
 /**
- * fy.bigint
+ * fy.isBigint
  * Test if `value` is an ES-proposed BigInt
+ * 测试`value`是否为 ES 建议的 BigInt
  *
  * @param {*} value value to test
  * @return {Boolean} true if `value` is a BigInt, false otherise
  * @api public
  */
 
-fy.bigint = function (value) {
+fy.isBigint = function (value) {
   return (
     typeof BigInt === "function" &&
     toStr.call(value) === "[object BigInt]" &&
@@ -870,4 +912,4 @@ fy.bigint = function (value) {
   );
 };
 
-module.exports = is;
+module.exports = fy;

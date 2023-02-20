@@ -1,6 +1,6 @@
 {
   "name": "fy.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ."
@@ -10,7 +10,7 @@
     "url": "https://ifuyuan.wang"
   },
   "description": "一个自用的 JavaScript类型测试库",
-  "homepage": "https://github.com/zoeblow/fy.js",
+  "homepage": "https://fy.js.org",
   "license": "MIT",
   "repository": {
     "type": "git",
