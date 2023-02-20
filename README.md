@@ -146,4 +146,4 @@ $ yarn add fy.js
   > 测试`value`是否为 ES 建议的 BigInt
 
 [npm-url]: https://npmjs.org/package/fy.js
-[npm-version-svg]: http://versionbadg.isEs/zoeblow/fy.js.svg
+[npm-version-svg]: https://versionbadg.es/zoeblow/fy.js.svg
