@@ -4,7 +4,7 @@
 
 ## 安装
 
-```shell
+```bash
 $ npm install fy.js
 # or
 $ yarn add fy.js

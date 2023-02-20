@@ -34,7 +34,7 @@ var base64Regex =
 var hexRegex = /^[A-Fa-f0-9]+$/;
 
 /**
- * Expose `fy`
+ * 声明 `fy`
  */
 
 var fy = {};
