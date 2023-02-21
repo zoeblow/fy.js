@@ -52,7 +52,7 @@ var fy = {};
  * @api public
  */
 
-isA = isTypeof = function (value, type) {
+fy.isA = fy.isTypeof = function (value, type) {
   return typeof value === type;
 };
 
