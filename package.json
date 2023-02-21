@@ -3,13 +3,14 @@
   "version": "0.0.5",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "npmPub":"nrm use npm &&  npm publish ."
   },
   "author": {
     "name": "Fuyuan Wang",
     "url": "https://ifuyuan.wang"
   },
-  "description": "一个自用的 JavaScript类型测试库",
+  "description": " 一个通用的 JavaScript 类型测试库 ",
   "homepage": "https://fy.js.org",
   "license": "MIT",
   "repository": {

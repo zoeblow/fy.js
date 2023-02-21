@@ -2,7 +2,7 @@
 
 /**!
  * fy.js
- * 一个自用的 JavaScript类型测试库
+ *  一个通用的 JavaScript 类型测试库
  *
  * @copyright 2016-2023 By zoeblow
  * @license MIT
@@ -52,7 +52,7 @@ var fy = {};
  * @api public
  */
 
-fy.isA = fy.isTypeof = function (value, type) {
+fy.isA = fy.isType = function (value, type) {
   return typeof value === type;
 };
 

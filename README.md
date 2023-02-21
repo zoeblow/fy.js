@@ -1,6 +1,6 @@
 # fy <sup>[![Version Badge][npm-version-svg]][npm-url]</sup>
 
-一个自用的 JavaScript 类型测试库
+ 一个通用的 JavaScript 类型测试库
 
 ## 安装
 
@@ -14,7 +14,7 @@ $ yarn add fy.js
 
 ### 通用
 
-- `fy.isA` (value, type) or `fy.isTypeof` (value, type)
+- `fy.isA` (value, type) or `fy.isType` (value, type)
   > 测试`value`的 typeOf 是否为`type`类型。
 - `fy.isDefined` (value)
   > 测试是否定义了`value`。
@@ -138,7 +138,7 @@ $ yarn add fy.js
 ### Symbols
 
 - `fy.isSymbol` (value)
-  > 测试`value`是否为 ES6 Symbol
+  > 测试`value`是否为 ES6 Symbol。
 
 ### 大数字
 
